@@ -1,0 +1,24 @@
+html, body {
+    margin: 0px;
+    padding: 0px;
+}
+
+header {
+    background-color: aquamarine;
+    width: 100vw;
+    margin: 0px !important;
+}
+
+.main-nav {
+    float: right;
+    margin-top: 55px;
+}
+
+.main-nav li {
+    list-style: none;
+    margin-left: 40px;
+}
+
+.main-nav button {
+    text-decoration: none;
+}
