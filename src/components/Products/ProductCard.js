@@ -6,7 +6,7 @@ export default class extends React.Component {
         return (
             <div className="product-card-container">
                 <div className="product-image"></div>
-                <div className='product-name'>Pencil</div>
+                <div className='product-name'>{this.props.product.name}</div>
             </div>
         );
     }
