@@ -7,7 +7,7 @@ import Orders from './components/Orders/Orders';
 
 export default class extends React.Component {
 
-  
+
 
   render() {
     return (
@@ -25,12 +25,15 @@ export default class extends React.Component {
                 <li>
                   <Link to='/orders'>Orders</Link>
                 </li>
+                <li>
+                  <i class="fas fa-shopping-cart"></i>
+                </li>
               </ul>
             </nav>
           </header>
-          <Route path='/products' component={Products} />            
-          <Route path='/users' component={Users} />            
-          <Route path='/orders' component={Orders} />            
+          <Route path='/products' component={Products} />
+          <Route path='/users' component={Users} />
+          <Route path='/orders' component={Orders} />
         </div>
       </Router>
     );
