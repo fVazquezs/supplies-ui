@@ -12,7 +12,7 @@ export default class extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { cart: [] };
+    this.state = { cart: [], expand: false };
   }
 
   updateCart = product => {
@@ -43,19 +43,12 @@ export default class extends React.Component {
   }
 
   mobileNav = () => {
-    var expand = false;
-    const menuIcon = expand ? (
-      <button onClick={this.expand = false}>
-        <FontAwesomeIcon icon={faTimes} />
-      </button>
-    ) : (
-        <button onClick={this.expand = true}>
-          <FontAwesomeIcon icon={faBars} />
+    const menuIcon = this.state.expand ? (
+      <div>
+        <button className='menu-button' onClick={() => this.setState({ expand: false })}>
+          <FontAwesomeIcon icon={faTimes} />
+
         </button>
-      );
-    return (
-      <nav className="mobile-nav">
-        {menuIcon}
         <ul>
           <li>
             <Link to='/products'>Products</Link>
@@ -67,6 +60,16 @@ export default class extends React.Component {
             <Link to='/orders'>Orders</Link>
           </li>
         </ul>
+      </div>
+    ) : (
+        <button className='menu-button' onClick={() => this.setState({ expand: true })}>
+          <FontAwesomeIcon icon={faBars} />
+        </button>
+      );
+    return (
+      <nav className="mobile-nav">
+        {menuIcon}
+
         <Link className="shopping-cart" to='/cart'>
           <FontAwesomeIcon icon={faShoppingCart} />
         </Link>

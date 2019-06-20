@@ -6,7 +6,15 @@ header {
   text-transform: uppercase;
 }
 
-.main-nav {
+.menu-button{
+  border: none;
+  background: none;
+  font-size: 250%;
+  color: #fff;
+  padding: 14px 16px;
+}
+
+.main-nav, .mobile-nav {
   float: right;
   margin-top: 55px;
   height: 100px;
@@ -56,4 +64,5 @@ nav a {
 .shopping-cart{
   float: right;
   color: #fff;
+  font-size: 250%;
 }
