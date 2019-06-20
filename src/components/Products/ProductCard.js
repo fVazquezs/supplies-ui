@@ -7,21 +7,12 @@ export default class extends React.Component {
         this.state = ({ buttons: '' })
     }
 
-    expandContent = () => {
-        this.setState({ buttons: <button className="ui button">buy</button> });
-    }
-    
-    minifyContent = () => {
-        this.setState({ buttons: '' });
-    }
-
     render() {
         return (
             <div onMouseEnter={this.expandContent} onMouseLeave={this.minifyContent} className="product-card-container">
                 <div className="product-image"></div>
                 <div className='product-name'>{this.props.product.name}</div>
-                {this.state.buttons}
-
+                <button className="ui button" onClick={() => this.props.addToOrder(this.props.product)}>Add</button>
             </div>
         );
     }

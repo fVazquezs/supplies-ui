@@ -1,26 +1,37 @@
 import React from 'react';
-import axios from 'axios';
 import ProductCard from './ProductCard.js';
+import ProductDataService from './ProductDataService.js';
 
 export default class extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { bearerToken: null, products: [] };
-        this.authenticate();
+        console.log(this.props)
+        this.state = { bearerToken: null, products: [], order: [] };
+        this.productDataService = new ProductDataService();
+        this.load();
     }
 
-    authenticate = async () => {
-        axios.get('http://localhost/Supplies-store-API/products').then(response => {
-            console.log(response.data);
-            this.setState({ products: response.data })
-        });
+    load = async () => {
+        const response = await this.productDataService.loadProducts();
+        console.log('response in the load function', response)
+        this.setState({ products: response })
+
+    }
+
+    addProductToOrder = (order) => {
+        var newOrders = this.state.order.slice();
+        newOrders.push(order);
+        this.setState({ order: newOrders })
+        console.log(this.state.order)
     }
 
     renderProducts = () => {
-        const products = this.state.products.map(product => {
-            return <ProductCard key={product.id} product={product} />
-        });
-        return <div className="product-list" > {products} </div>
+        if (this.state.products !== undefined) {
+            const products = this.state.products.map(product => {
+                return <ProductCard key={product.id} product={product} addToOrder={this.props.updateCart} />
+            });
+            return <div className="product-list" > {products} </div>
+        }
     }
     render() {
         return (
