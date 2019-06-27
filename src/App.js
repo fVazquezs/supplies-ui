@@ -3,22 +3,38 @@ import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart, faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import { Modal, Input, Button } from 'semantic-ui-react';
 import Products from './components/Products/Products';
 import Users from './components/Users/Users';
 import Orders from './components/Orders/Orders';
 import Cart from './components/Cart/Cart';
+import Axios from 'axios';
 
 export default class extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { cart: [], expand: false };
+    this.state = { cart: [], expand: false, email: '', password: '', isUserLogin: false };
+    console.log(window)
   }
 
   updateCart = product => {
     var newCart = this.state.cart.slice();
     newCart.push(product);
     this.setState({ cart: newCart })
+  }
+
+  authenticateUser = async () => {
+    console.log('user to authenticate', this.state.email, this.state.password)
+    const response = await Axios.post('http://localhost/Supplies-store-API/authenticate',
+      {
+        "email": this.state.email,
+        "password": this.state.password
+      }
+    ).then(response => {
+     console.log('logging the response',response)
+     window.sessionStorage.setItem("token", response.data.token)
+    });
   }
 
   desktopNav = () => {
@@ -44,20 +60,20 @@ export default class extends React.Component {
 
   mobileNav = () => {
     const menuIcon = this.state.expand ? (
-      <div>
+      <div className="expanded-menu">
         <button className='menu-button' onClick={() => this.setState({ expand: false })}>
           <FontAwesomeIcon icon={faTimes} />
 
         </button>
         <ul>
           <li>
-            <Link to='/products'>Products</Link>
+            <Link to='/products' onClick={() => this.setState({ expand: false })}>Products</Link>
           </li>
           <li>
-            <Link to='/users'>Users</Link>
+            <Link to='/users' onClick={() => this.setState({ expand: false })}>Users</Link>
           </li>
           <li>
-            <Link to='/orders'>Orders</Link>
+            <Link to='/orders' onClick={() => this.setState({ expand: false })}>Orders</Link>
           </li>
         </ul>
       </div>
@@ -81,16 +97,27 @@ export default class extends React.Component {
   render() {
     return (
       <Router>
+        <Modal open={!this.state.isUserLogin}>
+          <Modal.Header>Login</Modal.Header>
+          <Modal.Content>
+            <Modal.Description>
+              <Input placeholder='Email' onChange={(event, data) => this.setState({ email: data.value })} />
+              <Input placeholder='Password' onChange={(event, data) => this.setState({ password: data.value })} />
+            </Modal.Description>
+            <Button onClick={this.authenticateUser}>Go</Button>
+          </Modal.Content>
+        </Modal>
         <div className="App">
-          <header>
+          <header className={this.state.expand ? 'expanded-header' : 'minify-header'}>
             {window.innerWidth < 400 ? this.mobileNav() : this.desktopNav()}
           </header>
+          <div className="filler" />
           <Route path='/products' render={(props) => <Products {...props} updateCart={this.updateCart} />} />
           <Route path='/users' component={Users} />
           <Route path='/orders' component={Orders} />
           <Route path='/cart' render={(props) => <Cart {...props} cart={this.state.cart} />} />
         </div>
-      </Router>
+      </Router >
     );
   }
 }

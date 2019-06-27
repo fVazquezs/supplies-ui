@@ -1,27 +1,50 @@
 header {
-  height: 30vh;
   transform-style: inherit;
   width: 100vw;
   background: linear-gradient(134.82deg, #273061 0%, #121732 100%), #121732;
   text-transform: uppercase;
+  z-index: 999;
+  position: absolute;
 }
 
-.menu-button{
+.filler{
+  height: 10vh;
+}
+
+.expanded-header {
+  height: 23vh;
+}
+
+.minify-header {
+  height: 10vh;
+}
+
+.expanded-menu {
+  z-index: 999;
+  width: 70%;
+}
+
+.menu-button {
   border: none;
   background: none;
   font-size: 250%;
   color: #fff;
   padding: 14px 16px;
+  position: absolute;
 }
 
 .main-nav, .mobile-nav {
   float: right;
-  margin-top: 55px;
-  height: 100px;
   width: 100vw;
   top: 0;
-  position: fixed;
+  position: absolute;
   z-index: 9999;
+}
+
+.mobile-nav ul {
+  width: 50%;
+  margin-left: 30%;
+  text-align: center;
 }
 
 .main-nav ul {
@@ -61,8 +84,9 @@ nav a {
   text-align: center;
 }
 
-.shopping-cart{
+.shopping-cart {
   float: right;
   color: #fff;
   font-size: 250%;
+  z-index: 999;
 }
