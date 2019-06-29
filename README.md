@@ -1,3 +1,7 @@
+# Python version: 3.7.2
+# Node version: 11.4.0
+# Npm version: 6.4.1
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
