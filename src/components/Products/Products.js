@@ -1,18 +1,18 @@
 import React from 'react';
 import ProductCard from './ProductCard.js';
-import ProductDataService from './ProductDataService.js';
+import Supplies from '../../api/Supplies.js';
 
 export default class extends React.Component {
     constructor(props) {
         super(props);
         console.log(this.props)
         this.state = { bearerToken: null, products: [], order: [] };
-        this.productDataService = new ProductDataService();
+        this.suppliesDataService = new Supplies();
         this.load();
     }
 
     load = async () => {
-        const response = await this.productDataService.loadProducts();
+        const response = await this.suppliesDataService.loadProducts();
         console.log('response in the load function', response)
         this.setState({ products: response })
 

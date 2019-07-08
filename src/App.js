@@ -4,18 +4,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart, faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import { Modal, Input, Button } from 'semantic-ui-react';
+import Supplies from './api/Supplies.js';
 import Products from './components/Products/Products';
 import Users from './components/Users/Users';
 import Orders from './components/Orders/Orders';
 import Cart from './components/Cart/Cart';
-import Axios from 'axios';
 
 export default class extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = { cart: [], expand: false, email: '', password: '', isUserLogin: false };
-    console.log(window)
+    this.suppliesDataService = new Supplies();
   }
 
   updateCart = product => {
@@ -24,17 +24,18 @@ export default class extends React.Component {
     this.setState({ cart: newCart })
   }
 
+  isUserAuthenticated = () => {
+    if (window.sessionStorage.getItem("token")) {
+      return true;
+    } return this.state.isUserLogin ? true : false;
+  }
+
   authenticateUser = async () => {
-    console.log('user to authenticate', this.state.email, this.state.password)
-    const response = await Axios.post('http://localhost/Supplies-store-API/authenticate',
-      {
-        "email": this.state.email,
-        "password": this.state.password
-      }
-    ).then(response => {
-     console.log('logging the response',response)
-     window.sessionStorage.setItem("token", response.data.token)
-    });
+    const response = await this.suppliesDataService.authenticate(this.state.email, this.state.password);
+    if (response.data.token) {
+      window.sessionStorage.setItem("token", response.data.token)
+      this.setState({ isUserLogin: true })
+    }
   }
 
   desktopNav = () => {
@@ -97,12 +98,12 @@ export default class extends React.Component {
   render() {
     return (
       <Router>
-        <Modal open={!this.state.isUserLogin}>
+        <Modal className="login-modal" open={!this.isUserAuthenticated()}>
           <Modal.Header>Login</Modal.Header>
           <Modal.Content>
-            <Modal.Description>
-              <Input placeholder='Email' onChange={(event, data) => this.setState({ email: data.value })} />
-              <Input placeholder='Password' onChange={(event, data) => this.setState({ password: data.value })} />
+            <Modal.Description className="login-inputs">
+              <Input className="email-input" placeholder='Email' onChange={(event, data) => this.setState({ email: data.value })} />
+              <Input className="password-input" placeholder='Password' onChange={(event, data) => this.setState({ password: data.value })} />
             </Modal.Description>
             <Button onClick={this.authenticateUser}>Go</Button>
           </Modal.Content>

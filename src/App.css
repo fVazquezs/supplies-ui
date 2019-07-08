@@ -7,7 +7,7 @@ header {
   position: absolute;
 }
 
-.filler{
+.filler {
   height: 10vh;
 }
 
@@ -89,4 +89,12 @@ nav a {
   color: #fff;
   font-size: 250%;
   z-index: 999;
+}
+
+.login-modal {
+  width: 300px;
+}
+
+.login-inputs>Input {
+  margin: 10px;
 }
