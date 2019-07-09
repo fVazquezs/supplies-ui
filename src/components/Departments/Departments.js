@@ -14,7 +14,7 @@ export default class extends React.Component {
     loadDataService = async () => {
         const departments = await this.suppliesDataService.loadDepartments();
         console.log(departments)
-        this.setState({ departments: departments, departments: departments })
+        this.setState({ departments: departments })
     }
 
     renderDepartments = () => {
@@ -31,7 +31,7 @@ export default class extends React.Component {
         this.suppliesDataService.createDepartment({
             "name": this.state.newDepartmentName
         })
-        console.log(this.state)
+        this.setState({ newDepartmentModalActive: false })
     }
     render() {
         return (

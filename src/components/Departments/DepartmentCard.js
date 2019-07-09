@@ -1,7 +1,7 @@
 import React from 'react';
 import './DepartmentCard.css';
-import { Modal, Input, Button, Dropdown } from 'semantic-ui-react';
-import { faPen, faPrescriptionBottleAlt } from '@fortawesome/free-solid-svg-icons';
+import { Modal, Input, Button } from 'semantic-ui-react';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Supplies from '../../api/Supplies';
 
