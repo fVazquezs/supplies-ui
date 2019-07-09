@@ -36,8 +36,29 @@ export default class extends React.Component {
         return this.response;
     }
 
+    createUser = async header => {
+        await axios.post('http://localhost/Supplies-store-API/users', header).then(response => {
+            this.response = response.data;
+        });
+        return this.response;
+    }
+
     loadDepartments = async () => {
         await axios.get('http://localhost/Supplies-store-API/departments').then(response => {
+            this.response = response.data;
+        });
+        return this.response;
+    }
+
+    createDepartment = async header => {
+        await axios.post('http://localhost/Supplies-store-API/departments', header).then(response => {
+            this.response = response.data;
+        });
+        return this.response;
+    }
+
+    updateDepartment = async (id, header) => {
+        await axios.put('http://localhost/Supplies-store-API/departments/' + id, header).then(response => {
             this.response = response.data;
         });
         return this.response;
