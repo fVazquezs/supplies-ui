@@ -1,6 +1,22 @@
 import axios from 'axios';
 import React from 'react';
 
+const paths = {
+    baserUrl: '//supplies-store.herokuapp.com',
+    entity: {
+        products: '/products',
+        users: '/users',
+        departments: '/departments',
+        orders: '/orders'
+    },
+    entityWithId: {
+        products: '/products/',
+        users: '/users/',
+        departments: '/departments/',
+        orders: '/orders/'
+    }
+}
+
 export default class extends React.Component {
     constructor() {
         super();
@@ -16,7 +32,7 @@ export default class extends React.Component {
     }
 
     authenticate = async (email, password) => {
-        await axios.post('//supplies-store.herokuapp.com/authenticate',
+        await axios.post(paths.baserUrl + '/authenticate',
             {
                 "email": email,
                 "password": password
@@ -30,64 +46,33 @@ export default class extends React.Component {
         return this.response;
     }
 
-    loadProducts = async () => {    
-        await axios.get('//supplies-store.herokuapp.com/products', this.getTokenHeader()).then(response => {
+    load = async entity => {
+        var url = paths.baserUrl + paths.entity[entity];
+        await axios.get(url, this.getTokenHeader()).then(response => {
             this.response = response.data;
         });
         return this.response;
     }
 
-    loadUsers = async () => {
-        await axios.get('//supplies-store.herokuapp.com/users', this.getTokenHeader()).then(response => {
+    create = async (entity, body) => {
+        var url = paths.baserUrl + paths.entity[entity];
+        await axios.post(url, body, this.getTokenHeader()).then(response => {
             this.response = response.data;
         });
         return this.response;
     }
 
-    createUser = async body => {
-        await axios.post('//supplies-store.herokuapp.com/users', body, this.getTokenHeader()).then(response => {
+    update = async (entity, id, body) => {
+        var url = paths.baserUrl + paths.entityWithId[entity] + id;
+        await axios.put(url, body, this.getTokenHeader()).then(response => {
             this.response = response.data;
         });
         return this.response;
     }
 
-    updateUser = async (id, body) => {
-        await axios.put('//supplies-store.herokuapp.com/users/' + id, body, this.getTokenHeader()).then(response => {
-            this.response = response.data;
-        });
-        return this.response;
-    }
-
-    deleteUser = async id => {
-        await axios.delete('//supplies-store.herokuapp.com/users/' + id, this.getTokenHeader()).then(response => {
-            this.response = response.data;
-        });
-        return this.response;
-    }
-
-    loadDepartments = async () => {
-        await axios.get('//supplies-store.herokuapp.com/departments', this.getTokenHeader()).then(response => {
-            this.response = response.data;
-        });
-        return this.response;
-    }
-
-    createDepartment = async body => {
-        await axios.post('//supplies-store.herokuapp.com/departments', body, this.getTokenHeader()).then(response => {
-            this.response = response.data;
-        });
-        return this.response;
-    }
-
-    updateDepartment = async (id, body) => {
-        await axios.put('//supplies-store.herokuapp.com/departments/' + id, body, this.getTokenHeader()).then(response => {
-            this.response = response.data;
-        });
-        return this.response;
-    }
-
-    deleteDepartment = async id => {
-        await axios.delete('//supplies-store.herokuapp.com/departments/' + id, this.getTokenHeader()).then(response => {
+    delete = async (entity, id) => {
+        var url = paths.baserUrl + paths.entityWithId[entity] + id;
+        await axios.delete(url, this.getTokenHeader()).then(response => {
             this.response = response.data;
         });
         return this.response;

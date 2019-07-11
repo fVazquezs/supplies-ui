@@ -7,9 +7,9 @@
     display: grid;
     grid-template-columns: 50% 20% 15% 15%;
     height: 50px;
-    margin: 10px;
-    width: 95%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    margin: 10px 1px 10px 1px;
+    width: 99%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     transition: box-shadow 0.3s cubic-bezier(.25, .8, .25, 1);
 }
 
@@ -17,6 +17,23 @@
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
-.user-name{
+.user-name, .user-department {
+    font-size: 115%;
     text-align: center;
+    margin: auto;
+}
+
+.update-name-input, .update-email-input, .update-password-input, .update-department-dropdown {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.user-delete {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.user-edit-button, .user-delete-button {
+    padding: 0 !important;
+    margin: 5px !important;
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import UserCard from './UserCard.js';
 import Supplies from '../../api/Supplies.js';
 import { Modal, Input, Button, Dropdown } from 'semantic-ui-react';
+import "./Users.css";
 
 export default class extends React.Component {
     constructor(props) {
@@ -12,13 +13,13 @@ export default class extends React.Component {
     }
 
     loadDataService = async () => {
-        const users = await this.suppliesDataService.loadUsers();
-        const departments = await this.suppliesDataService.loadDepartments();
+        const users = await this.suppliesDataService.load('users');
+        const departments = await this.suppliesDataService.load('departments');
         this.setState({ users: users, departments: departments })
     }
 
     createNewUser = async () => {
-        await this.suppliesDataService.createUser({
+        await this.suppliesDataService.create('users', {
             "name": this.state.newUserName,
             "email": this.state.newUserEmail,
             "password": this.state.newUserPassword,
@@ -32,7 +33,7 @@ export default class extends React.Component {
         var users = null;
         if (this.state.users !== null) {
             users = this.state.users.map(user => {
-                return <UserCard key={user.id} user={user} departments={this.state.departments} reload={this.loadDataService}/>
+                return <UserCard key={user.id} user={user} departments={this.state.departments} reload={this.loadDataService} />
             });
         }
         return <div className="user-list" > {users} </div>
@@ -44,10 +45,10 @@ export default class extends React.Component {
                 <Modal.Header>New User</Modal.Header>
                 <Modal.Content>
                     <Modal.Description className="user-inputs">
-                        <Input className="name-input" placeholder='Name' onChange={(event, data) => this.setState({ newUserName: data.value })} />
-                        <Input className="email-input" placeholder='Email' onChange={(event, data) => this.setState({ newUserEmail: data.value })} />
-                        <Input className="password-input" placeholder='Password' onChange={(event, data) => this.setState({ newUserPassword: data.value })} />
-                        <Dropdown placeholder="Select department" search selection
+                        <Input className="new-name-input" placeholder='Name' onChange={(event, data) => this.setState({ newUserName: data.value })} />
+                        <Input className="new-email-input" placeholder='Email' onChange={(event, data) => this.setState({ newUserEmail: data.value })} />
+                        <Input className="new-password-input" placeholder='Password' onChange={(event, data) => this.setState({ newUserPassword: data.value })} />
+                        <Dropdown className="new-department-dropdown" placeholder="Select department" search selection
                             onChange={(event, data) => this.setState({ newUserDepartment: data.value })}
                             options={this.state.departments.map(department => {
                                 return {
@@ -95,7 +96,10 @@ export default class extends React.Component {
             <div className="master">
                 {this.newUserModal()}
                 {this.updateUserModal()}
-                <Button onClick={() => this.setState({ newUserModalActive: true })}>New</Button>
+                <div className="user-header">
+                    <Input className="user-filter" />
+                    <Button className="new-user-button" onClick={() => this.setState({ newUserModalActive: true })}>New</Button>
+                </div>
                 {this.renderUsers()}
             </div>
         );

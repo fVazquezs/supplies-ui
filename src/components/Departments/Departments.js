@@ -12,7 +12,7 @@ export default class extends React.Component {
     }
 
     loadDataService = async () => {
-        const departments = await this.suppliesDataService.loadDepartments();
+        const departments = await this.suppliesDataService.load('departments');
         this.setState({ departments: departments })
     }
 
@@ -20,14 +20,14 @@ export default class extends React.Component {
         var departments = null;
         if (this.state.departments !== null) {
             departments = this.state.departments.map(department => {
-                return <DepartmentCard key={department.id} department={department} reload={this.loadDataService}/>
+                return <DepartmentCard key={department.id} department={department} reload={this.loadDataService} />
             });
         }
         return <div className="department-list" > {departments} </div>
     }
 
     createNewDepartment = async () => {
-        await this.suppliesDataService.createDepartment({
+        await this.suppliesDataService.create('departments', {
             "name": this.state.newDepartmentName
         })
         this.setState({ newDepartmentModalActive: false });

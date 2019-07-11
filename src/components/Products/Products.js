@@ -11,7 +11,7 @@ export default class extends React.Component {
     }
 
     load = async () => {
-        const response = await this.suppliesDataService.loadProducts();
+        const response = await this.suppliesDataService.load('products');
         this.setState({ products: response })
 
     }
