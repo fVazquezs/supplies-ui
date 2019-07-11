@@ -68,7 +68,6 @@ export default class extends React.Component {
       <div className="expanded-menu">
         <button className='menu-button' onClick={() => this.setState({ expand: false })}>
           <FontAwesomeIcon icon={faTimes} />
-
         </button>
         <ul>
           <li>
@@ -110,9 +109,9 @@ export default class extends React.Component {
           <Modal.Content>
             <Modal.Description className="login-inputs">
               <Input className="email-input" placeholder='Email' onChange={(event, data) => this.setState({ email: data.value })} />
-              <Input className="password-input" placeholder='Password' onChange={(event, data) => this.setState({ password: data.value })} />
+              <Input className="password-input" type="password" placeholder='Password' onChange={(event, data) => this.setState({ password: data.value })} />
             </Modal.Description>
-            <Button onClick={this.authenticateUser}>Go</Button>
+            <Button onClick={this.authenticateUser}>Login</Button>
           </Modal.Content>
         </Modal>
         <div className="App">

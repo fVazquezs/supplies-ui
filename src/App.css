@@ -12,7 +12,7 @@ header {
 }
 
 .expanded-header {
-  height: 23vh;
+  height: 24vh;
 }
 
 .minify-header {
@@ -48,7 +48,7 @@ header {
 }
 
 .main-nav ul {
-  margin-right: 100px;
+  margin: 0;
 }
 
 .main-nav li {
@@ -95,6 +95,11 @@ nav a {
   width: 300px;
 }
 
-.login-inputs>Input {
-  margin: 10px;
+.password-input, .email-input {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+Modal>Button {
+  float: right;
 }

@@ -1,18 +1,18 @@
 import React from 'react';
-import axios from 'axios';
 import OrderCard from './OrderCard.js';
+import Supplies from '../../api/Supplies.js';
 
 export default class extends React.Component {
     constructor(props) {
         super(props);
         this.state = { bearerToken: null, orders: [] };
+        this.suppliesDataService = new Supplies();
         this.authenticate();
     }
 
     authenticate = async () => {
-        axios.get('http://localhost/Supplies-store-API/orders').then(response => {
-            this.setState({ orders: response.data })
-        });
+        const response = await this.suppliesDataService.load('orders');
+        this.setState({ orders: response })
     }
 
     renderOrders = () => {

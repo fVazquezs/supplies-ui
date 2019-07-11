@@ -17,7 +17,7 @@ export default class extends React.Component {
     }
 
     updateDepartment = async () => {
-        await this.suppliesDataService.updateDepartment(this.props.department.id, {
+        await this.suppliesDataService.update('departments', this.props.department.id, {
             "id": this.props.department.id,
             "name": this.state.newDepartmentName
         });
@@ -26,7 +26,7 @@ export default class extends React.Component {
     }
 
     deleteDepartment = async () => {
-        await this.suppliesDataService.deleteDepartment(this.props.department.id);
+        await this.suppliesDataService.delete('departments', this.props.department.id);
         this.setState({ deleteDepartmentModalActive: false });
         this.props.reload();
     }
