@@ -11,7 +11,6 @@ export default class extends React.Component {
 
     authenticate = async () => {
         axios.get('http://localhost/Supplies-store-API/orders').then(response => {
-            console.log(response.data);
             this.setState({ orders: response.data })
         });
     }

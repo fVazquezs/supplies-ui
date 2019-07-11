@@ -5,7 +5,6 @@ import Supplies from '../../api/Supplies.js';
 export default class extends React.Component {
     constructor(props) {
         super(props);
-        console.log(this.props)
         this.state = { bearerToken: null, products: [], order: [] };
         this.suppliesDataService = new Supplies();
         this.load();
@@ -13,7 +12,6 @@ export default class extends React.Component {
 
     load = async () => {
         const response = await this.suppliesDataService.loadProducts();
-        console.log('response in the load function', response)
         this.setState({ products: response })
 
     }
@@ -22,7 +20,6 @@ export default class extends React.Component {
         var newOrders = this.state.order.slice();
         newOrders.push(order);
         this.setState({ order: newOrders })
-        console.log(this.state.order)
     }
 
     renderProducts = () => {

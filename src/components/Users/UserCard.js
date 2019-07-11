@@ -1,21 +1,44 @@
 import React from 'react';
 import './UserCard.css';
 import { Modal, Input, Button, Dropdown } from 'semantic-ui-react';
-import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Supplies from '../../api/Supplies';
 
 export default class extends React.Component {
-    state = {
-        updateUserModalActive: false,
-        newUserName: this.props.user.name,
-        newUserEmail: this.props.user.email,
-        newUserPassword: this.props.user.password,
-        newUserDepartment: this.props.user.departmentId
+    constructor(props) {
+        super(props);
+        this.state = ({
+            updateUserModalActive: false,
+            deleteUserModalActive: false,
+            newUserName: this.props.user.name,
+            newUserEmail: this.props.user.email,
+            newUserPassword: this.props.user.password,
+            newUserDepartment: this.props.user.departmentId
+        })
+        this.suppliesDataService = new Supplies();
+    }
+
+    updateUser = async () => {
+        await this.suppliesDataService.updateUser(this.props.user.id, {
+            "name": this.state.newUserName,
+            "email": this.state.newUserEmail,
+            "password": this.state.newUserPassword,
+            "departmentId": this.state.newUserDepartment
+        });
+        this.setState({ updateUserModalActive: false });
+        this.props.reload();
+    }
+
+    deleteUser = async () => {
+        await this.suppliesDataService.deleteUser(this.props.user.id);
+        this.setState({ deleteUserModalActive: false });
+        this.props.reload();
     }
     render() {
         return (
             <div className="user-card-container">
-                <Modal className="new-user-modal" open={this.state.updateUserModalActive}>
+                <Modal className="update-user-modal" open={this.state.updateUserModalActive}>
                     <Modal.Header>Edit User</Modal.Header>
                     <Modal.Content>
                         <Modal.Description className="user-inputs">
@@ -32,13 +55,24 @@ export default class extends React.Component {
                                     }
                                 })} />
                         </Modal.Description>
-                        <Button onClick={this.createNewUser}>Create</Button>
+                        <Button onClick={this.updateUser}>Update</Button>
                         <Button onClick={() => this.setState({ updateUserModalActive: false })}>Cancel</Button>
+                    </Modal.Content>
+                </Modal>
+                <Modal className="delete-user-modal" open={this.state.deleteUserModalActive}>
+                    <Modal.Header>Delete User</Modal.Header>
+                    <Modal.Content>
+                        <Modal.Description className="user-delete">
+                            Are you sure to delete {this.props.user.name}?
+                        </Modal.Description>
+                        <Button onClick={this.deleteUser}>Delete</Button>
+                        <Button onClick={() => this.setState({ deleteUserModalActive: false })}>Cancel</Button>
                     </Modal.Content>
                 </Modal>
                 <div className="user-name">{this.props.user.name}</div>
                 <div className='user-department'>{this.props.user.departmentId}</div>
                 <Button onClick={() => this.setState({ updateUserModalActive: true })}><FontAwesomeIcon icon={faPen} /></Button>
+                <Button onClick={() => this.setState({ deleteUserModalActive: true })}><FontAwesomeIcon icon={faTrash} /></Button>
             </div>
         );
     }
