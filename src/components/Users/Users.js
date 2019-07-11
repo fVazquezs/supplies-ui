@@ -14,26 +14,25 @@ export default class extends React.Component {
     loadDataService = async () => {
         const users = await this.suppliesDataService.loadUsers();
         const departments = await this.suppliesDataService.loadDepartments();
-        console.log(departments)
         this.setState({ users: users, departments: departments })
     }
 
-    createNewUser = () => {
-        this.suppliesDataService.createUser({
+    createNewUser = async () => {
+        await this.suppliesDataService.createUser({
             "name": this.state.newUserName,
             "email": this.state.newUserEmail,
             "password": this.state.newUserPassword,
             "departmentId": this.state.newUserDepartment
         })
         this.setState({ newUserModalActive: false })
-        console.log(this.state)
+        this.loadDataService();
     }
 
     renderUsers = () => {
         var users = null;
         if (this.state.users !== null) {
             users = this.state.users.map(user => {
-                return <UserCard key={user.id} user={user} departments={this.state.departments} />
+                return <UserCard key={user.id} user={user} departments={this.state.departments} reload={this.loadDataService}/>
             });
         }
         return <div className="user-list" > {users} </div>
