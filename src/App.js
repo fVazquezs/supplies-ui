@@ -15,8 +15,22 @@ export default class extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { cart: [], expand: false, email: '', password: '', isUserLogin: false };
+    this.state = { isDesktop: false, cart: [], expand: false, email: '', password: '', isUserLogin: false };
     this.suppliesDataService = new Supplies();
+  }
+
+  updateDimensions = () => {
+    this.setState({ isDesktop: window.innerWidth < 450 ? false : true })
+    console.log(window.innerWidth)
+  }
+  componentWillMount() {
+    this.updateDimensions();
+  }
+  componentDidMount() {
+    window.addEventListener("resize", this.updateDimensions);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions);
   }
 
   updateCart = product => {
@@ -116,7 +130,7 @@ export default class extends React.Component {
         </Modal>
         <div className="App">
           <header className={this.state.expand ? 'expanded-header' : 'minify-header'}>
-            {window.innerWidth < 400 ? this.mobileNav() : this.desktopNav()}
+            {this.state.isDesktop ? this.desktopNav() : this.mobileNav()}
           </header>
           <div className="filler" />
           <Route path='/products' render={(props) => <Products {...props} updateCart={this.updateCart} />} />
