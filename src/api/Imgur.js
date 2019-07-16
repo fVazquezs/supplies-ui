@@ -1,9 +1,6 @@
 import axios from 'axios';
 import React from 'react';
 
-const paths = {
-}
-
 export default class extends React.Component {
     constructor() {
         super();
@@ -21,11 +18,8 @@ export default class extends React.Component {
     postImage = async (body) => {
         console.log(body)
         await axios.post("https://api.imgur.com/3/image", body, this.getTokenHeader()).then(response => {
-            console.log(response)
             this.response = response.data;
         });
         return this.response;
     }
-
-
 }

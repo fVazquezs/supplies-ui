@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React from 'react';
+import Imgur from './Imgur';
 
 const paths = {
     baserUrl: '//supplies-store.herokuapp.com',
@@ -21,6 +22,7 @@ export default class extends React.Component {
     constructor() {
         super();
         this.state = { token: sessionStorage.getItem('token') };
+        this.imgurDataService = new Imgur();
     }
 
     getTokenHeader() {
@@ -56,6 +58,16 @@ export default class extends React.Component {
 
     create = async (entity, body) => {
         var url = paths.baserUrl + paths.entity[entity];
+        await axios.post(url, body, this.getTokenHeader()).then(response => {
+            this.response = response.data;
+        });
+        return this.response;
+    }
+
+    create = async (entity, body, image) => {
+        var url = paths.baserUrl + paths.entity[entity];
+        const imageResponse = await this.imgurDataService.postImage(image);
+        body.imgPath = imageResponse.data.id;
         await axios.post(url, body, this.getTokenHeader()).then(response => {
             this.response = response.data;
         });
