@@ -7,7 +7,7 @@ import { Modal, Input, Button } from 'semantic-ui-react';
 export default class extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { file: null, imagePreviewUrl: '', newProductModalActive: false, products: [], order: [], path: '' };
+        this.state = { file: null, imagePreviewUrl: '', newProductModalActive: false, newProductName: '', newProductDescription: '', products: [], order: [], path: '' };
         this.suppliesDataService = new Supplies();
         this.imgur = new Imgur();
         this.load();
@@ -25,19 +25,6 @@ export default class extends React.Component {
         this.setState({ order: newOrders })
     }
 
-    renderProducts = () => {
-        if (this.state.products !== undefined) {
-            const products = this.state.products.map(product => {
-                return <ProductCard key={product.id} product={product} addToOrder={this.props.updateCart} />
-            });
-            return <div className="product-list" > {products} </div>
-        }
-    }
-    renderfakeimg = () => {
-        console.log(this.state.path)
-        if (this.state.path)
-            return <img src={this.state.path} />;
-    }
     uploadImage = async e => {
         e.preventDefault();
 
@@ -47,26 +34,42 @@ export default class extends React.Component {
         reader.onloadend = () => {
             this.setState({
                 file: file,
-                path: reader.result
             });
         }
-
         reader.readAsDataURL(file)
-        this.imgur.postImage(file)
-        console.log("file",file)
-        console.log('reader', reader)
-        console.log(this.state);
-        
     }
+
+    createNewProduct = async () => {
+        await this.suppliesDataService.create('products', {
+            "name": this.state.newProductName,
+            "description": this.state.newProductDescription,
+            "imgPath": '' 
+        }, this.state.file)
+        this.setState({ newUserModalActive: false })
+        this.load();
+    }
+
+    renderProducts = () => {
+        if (this.state.products !== undefined) {
+            const products = this.state.products.map(product => {
+                return <ProductCard key={product.id} product={product} addToOrder={this.props.updateCart} reload={this.load} />
+            });
+            return <div className="product-list" > {products} </div>
+        }
+    }
+
     newProductModal = () => {
         return (
             <Modal className="new-product-modal" open={this.state.newProductModalActive}>
                 <Modal.Header>New Product</Modal.Header>
                 <Modal.Content>
                     <Modal.Description className="product-inputs">
+                        <Input className="new-name-input" placeholder='Name' onChange={(event, data) => this.setState({ newProductName: data.value })} />
+                        <Input className="new-description-input" placeholder='Email' onChange={(event, data) => this.setState({ newProductDescription: data.value })} />
                         <Input type='file' id='multi' onChange={this.uploadImage} multiple />
-                        {this.renderfakeimg()}
                     </Modal.Description>
+                    <Button onClick={this.createNewProduct}>Create</Button>
+                    <Button onClick={() => this.setState({ newProductModalActive: false })}>Cancel</Button>
                 </Modal.Content>
             </Modal>
         )

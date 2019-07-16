@@ -32,8 +32,6 @@ export default class extends React.Component {
     }
 
     filterUsers = data => {
-        console.log(data)
-        console.log(this.state.users);
         if (data === '') {
             this.setState({ displayUsers: this.state.users })
         } else {
