@@ -13,14 +13,38 @@ export default class extends React.Component {
             deleteProductModalActive: false,
             newProductName: this.props.product.name,
             newProductDescription: this.props.product.description,
-            newProductImgPath: this.props.product.imgPath,
+            newProductFile: null,
         })
         this.suppliesDataService = new Supplies();
+    }
+
+    uploadImage = async e => {
+        e.preventDefault();
+
+        let reader = new FileReader();
+        let file = e.target.files[0];
+
+        reader.onloadend = () => {
+            this.setState({
+                newProductFile: file,
+            });
+        }
+        reader.readAsDataURL(file)
     }
 
     deleteProduct = async () => {
         await this.suppliesDataService.delete('products', this.props.product.id);
         this.setState({ deleteProductModalActive: false });
+        this.props.reload();
+    }
+
+    updateProduct = async () => {
+        await this.suppliesDataService.updateProduct('products', this.props.product.id, {
+            "name": this.state.newProductName,
+            "description": this.state.newProductDescription,
+            "imgPath": null 
+        }, this.state.newProductFile);
+        this.setState({ updateProductModalActive: false });
         this.props.reload();
     }
 
@@ -37,8 +61,8 @@ export default class extends React.Component {
                     <Modal.Content>
                         <Modal.Description className="product-inputs">
                             <Input className="update-name-input" type="text" value={this.state.newProductName} placeholder='Name' onChange={(e, data) => this.setState({ newProductName: data.value })} />
-                            <Input className="update-email-input" type="email" value={this.state.newProductEmail} placeholder='Email' onChange={(e, data) => this.setState({ newProductEmail: data.value })} />
-                            <Input className="update-password-input" type="password" placeholder='Password' value={this.state.newProductPassword} onChange={(e, data) => this.setState({ newProductPassword: data.value })} />
+                            <Input className="update-email-input" type="text" value={this.state.newProductDescription} placeholder='Description' onChange={(e, data) => this.setState({ newProductEmail: data.value })} />
+                            <Input className="update-password-input" type="file" onChange={this.uploadImage} />
                         </Modal.Description>
                         <Button onClick={this.updateProduct}>Update</Button>
                         <Button onClick={() => this.setState({ updateProductModalActive: false })}>Cancel</Button>
@@ -55,7 +79,7 @@ export default class extends React.Component {
                     </Modal.Content>
                 </Modal>
                 <div className="product-image">{this.loadImage()}</div>
-                <div className='product-name'>{this.props.product.name}</div>
+                <div className='product-name'><b>{this.props.product.name}</b></div>
                 <Button className="product-edit-button" onClick={() => this.setState({ updateProductModalActive: true })}><FontAwesomeIcon icon={faPen} /></Button>
                 <Button className="product-delete-button" onClick={() => this.setState({ deleteProductModalActive: true })}><FontAwesomeIcon icon={faTrash} /></Button>
             </div>

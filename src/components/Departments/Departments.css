@@ -1,0 +1,25 @@
+.department-list {
+    display: grid;
+    margin: 0 auto 0 auto;
+}
+
+@media only screen and (min-width: 600px) {
+    .department-list {
+        width: 530px;
+        grid-template-columns: 260px 260px;
+    }
+}
+
+@media only screen and (min-width: 850px) {
+    .department-list {
+        width: 1040px;
+        grid-template-columns: 260px 260px 260px;
+    }
+}
+
+@media only screen and (min-width: 1040px) {
+    .department-list {
+        width: 1560px;
+        grid-template-columns: 260px 260px 260px 260px;
+    }
+}

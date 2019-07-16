@@ -64,13 +64,10 @@ export default class extends React.Component {
         return this.response;
     }
 
-    create = async (entity, body, image) => {
-        var url = paths.baserUrl + paths.entity[entity];
+    createProduct = async (entity, body, image) => {
         const imageResponse = await this.imgurDataService.postImage(image);
         body.imgPath = imageResponse.data.id;
-        await axios.post(url, body, this.getTokenHeader()).then(response => {
-            this.response = response.data;
-        });
+        this.response = this.create(entity, body);
         return this.response;
     }
 
@@ -79,6 +76,13 @@ export default class extends React.Component {
         await axios.put(url, body, this.getTokenHeader()).then(response => {
             this.response = response.data;
         });
+        return this.response;
+    }
+
+    updateProduct = async (entity, id, body, image) => {
+        const imageResponse = await this.imgurDataService.postImage(image);
+        body.imgPath = imageResponse.data.id;
+        this.response = this.update(entity, id, body);
         return this.response;
     }
 

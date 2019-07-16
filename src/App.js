@@ -3,7 +3,7 @@ import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart, faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
-import { Modal, Input, Button } from 'semantic-ui-react';
+import { Modal, Input, Button, Form } from 'semantic-ui-react';
 import Supplies from './api/Supplies.js';
 import Products from './components/Products/Products';
 import Users from './components/Users/Users';
@@ -20,7 +20,7 @@ export default class extends React.Component {
   }
 
   updateDimensions = () => {
-    this.setState({ isDesktop: window.innerWidth < 450 ? false : true })
+    this.setState({ isDesktop: window.innerWidth < 560 ? false : true })
   }
   componentWillMount() {
     this.updateDimensions();
@@ -44,7 +44,8 @@ export default class extends React.Component {
     } return this.state.isUserLogin ? true : false;
   }
 
-  authenticateUser = async () => {
+  authenticateUser = async (e) => {
+    e.preventDefault();
     const response = await this.suppliesDataService.authenticate(this.state.email, this.state.password);
     if (response.data.token) {
       window.sessionStorage.setItem("token", response.data.token)
@@ -105,7 +106,7 @@ export default class extends React.Component {
     return (
       <nav className="mobile-nav">
         <div>
-        {menuIcon}
+          {menuIcon}
         </div>
         <Link className="shopping-cart" to='/cart'>
           <FontAwesomeIcon icon={faShoppingCart} />
@@ -122,10 +123,18 @@ export default class extends React.Component {
           <Modal.Header>Login</Modal.Header>
           <Modal.Content>
             <Modal.Description className="login-inputs">
-              <Input className="email-input" placeholder='Email' onChange={(event, data) => this.setState({ email: data.value })} />
-              <Input className="password-input" type="password" placeholder='Password' onChange={(event, data) => this.setState({ password: data.value })} />
+              <Form onSubmit={(e) => this.authenticateUser(e)}>
+                <Form.Field>
+                  <label>Email:</label>
+                  <Input className="email-input" placeholder='Email' onChange={(event, data) => this.setState({ email: data.value })} />
+                </Form.Field>
+                <Form.Field>
+                <label>Password:</label>
+                  <Input className="password-input" type="password" placeholder='Password' onChange={(event, data) => this.setState({ password: data.value })} />
+                </Form.Field>
+                <Button type="submit">Login</Button>
+              </Form>
             </Modal.Description>
-            <Button onClick={this.authenticateUser}>Login</Button>
           </Modal.Content>
         </Modal>
         <div className="App">

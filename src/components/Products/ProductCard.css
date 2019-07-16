@@ -6,7 +6,7 @@
     position: relative;
     display: inline-block;
     height: 300px;
-    margin: 1rem;
+    margin: 10px;
     width: 300px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     transition: box-shadow 0.3s cubic-bezier(.25, .8, .25, 1);
@@ -17,17 +17,17 @@
 }
 
 .product-image{
-    height: 80%;
-    margin: 5px;
-    
+    height: 70%;
+    margin: 5px 5px 0 5px;  
 }
 
 .product-image-rendering{
-    max-width: 100%;
+    width: 100%;
     max-height: 100%;
-    align-content: center;
 }
 
 .product-name{
+    font-size: 115%;
+    margin: 5px 0 5px 0;
     text-align: center;
 }
