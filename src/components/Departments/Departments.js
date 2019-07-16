@@ -1,3 +1,4 @@
+import "./Departments.css";
 import React from 'react';
 import DepartmentCard from './DepartmentCard.js';
 import Supplies from '../../api/Supplies.js';

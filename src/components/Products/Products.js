@@ -1,3 +1,4 @@
+import './Products.css';
 import React from 'react';
 import ProductCard from './ProductCard.js';
 import Supplies from '../../api/Supplies.js';
@@ -7,16 +8,28 @@ import { Modal, Input, Button } from 'semantic-ui-react';
 export default class extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { file: null, imagePreviewUrl: '', newProductModalActive: false, newProductName: '', newProductDescription: '', products: [], order: [], path: '' };
+        this.state = { file: null, imagePreviewUrl: '', newProductModalActive: false, newProductName: '', newProductDescription: '', displayProducts: [], products: [], order: [], path: '' };
         this.suppliesDataService = new Supplies();
         this.imgur = new Imgur();
         this.load();
     }
 
     load = async () => {
-        const response = await this.suppliesDataService.load('products');
-        this.setState({ products: response })
+        const products = await this.suppliesDataService.load('products');
+        this.setState({ displayProducts: products, products })
 
+    }
+    
+    filterProducts = data => {
+        if (data === '') {
+            this.setState({ displayProducts: this.state.products })
+        } else {
+            this.setState({
+                displayProducts: this.state.products.filter(function (user) {
+                    return user.name.includes(data);
+                })
+            })
+        }
     }
 
     addProductToOrder = (order) => {
@@ -40,18 +53,18 @@ export default class extends React.Component {
     }
 
     createNewProduct = async () => {
-        await this.suppliesDataService.create('products', {
+        await this.suppliesDataService.createProduct('products', {
             "name": this.state.newProductName,
             "description": this.state.newProductDescription,
-            "imgPath": '' 
+            "imgPath": ''
         }, this.state.file)
         this.setState({ newUserModalActive: false })
         this.load();
     }
 
     renderProducts = () => {
-        if (this.state.products !== undefined) {
-            const products = this.state.products.map(product => {
+        if (this.state.displayProducts !== undefined) {
+            const products = this.state.displayProducts.map(product => {
                 return <ProductCard key={product.id} product={product} addToOrder={this.props.updateCart} reload={this.load} />
             });
             return <div className="product-list" > {products} </div>
@@ -66,7 +79,7 @@ export default class extends React.Component {
                     <Modal.Description className="product-inputs">
                         <Input className="new-name-input" placeholder='Name' onChange={(event, data) => this.setState({ newProductName: data.value })} />
                         <Input className="new-description-input" placeholder='Email' onChange={(event, data) => this.setState({ newProductDescription: data.value })} />
-                        <Input type='file' id='multi' onChange={this.uploadImage} multiple />
+                        <Input type='file' onChange={this.uploadImage} />
                     </Modal.Description>
                     <Button onClick={this.createNewProduct}>Create</Button>
                     <Button onClick={() => this.setState({ newProductModalActive: false })}>Cancel</Button>
@@ -78,8 +91,11 @@ export default class extends React.Component {
         return (
             <div className="master">
                 {this.newProductModal()}
-                <Button className="new-product-button" onClick={() => this.setState({ newProductModalActive: true })}>New</Button>
 
+                <div className="product-header">
+                    <Input className="product-filter" placeholder="Search product" onChange={(e, data) => this.filterProducts(data.value)} />
+                    <Button className="new-product-button" onClick={() => this.setState({ newProductModalActive: true })}>New</Button>
+                </div>
                 {this.renderProducts()}
             </div>
         );
