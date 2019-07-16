@@ -21,7 +21,6 @@ export default class extends React.Component {
 
   updateDimensions = () => {
     this.setState({ isDesktop: window.innerWidth < 450 ? false : true })
-    console.log(window.innerWidth)
   }
   componentWillMount() {
     this.updateDimensions();
@@ -105,8 +104,9 @@ export default class extends React.Component {
       );
     return (
       <nav className="mobile-nav">
+        <div>
         {menuIcon}
-
+        </div>
         <Link className="shopping-cart" to='/cart'>
           <FontAwesomeIcon icon={faShoppingCart} />
         </Link>

@@ -7,15 +7,17 @@ import "./Users.css";
 export default class extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { bearerToken: null, users: [], departments: [], newUserModalActive: false, updateUserModalActive: null, newUserName: null, newUserEmail: null, newUserPassword: null, newUserDepartment: null };
+        this.state = { bearerToken: null, displayUsers: [], users: [], departments: [], newUserModalActive: false, updateUserModalActive: null, newUserName: null, newUserEmail: null, newUserPassword: null, newUserDepartment: null };
         this.suppliesDataService = new Supplies();
+        this.displayUsers = [];
         this.loadDataService();
     }
 
     loadDataService = async () => {
         const users = await this.suppliesDataService.load('users');
         const departments = await this.suppliesDataService.load('departments');
-        this.setState({ users: users, departments: departments })
+        this.setState({ displayUsers: users, users, departments })
+
     }
 
     createNewUser = async () => {
@@ -29,10 +31,24 @@ export default class extends React.Component {
         this.loadDataService();
     }
 
+    filterUsers = data => {
+        console.log(data)
+        console.log(this.state.users);
+        if (data === '') {
+            this.setState({ displayUsers: this.state.users })
+        } else {
+            this.setState({
+                displayUsers: this.state.users.filter(function (user) {
+                    return user.name.includes(data);
+                })
+            })
+        }
+    }
+
     renderUsers = () => {
         var users = null;
-        if (this.state.users !== null) {
-            users = this.state.users.map(user => {
+        if (this.state.displayUsers !== null) {
+            users = this.state.displayUsers.map(user => {
                 return <UserCard key={user.id} user={user} departments={this.state.departments} reload={this.loadDataService} />
             });
         }
@@ -97,7 +113,7 @@ export default class extends React.Component {
                 {this.newUserModal()}
                 {this.updateUserModal()}
                 <div className="user-header">
-                    <Input className="user-filter" />
+                    <Input className="user-filter" onChange={(e, data) => this.filterUsers(data.value)} />
                     <Button className="new-user-button" onClick={() => this.setState({ newUserModalActive: true })}>New</Button>
                 </div>
                 {this.renderUsers()}
