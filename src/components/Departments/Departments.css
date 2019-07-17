@@ -1,3 +1,21 @@
+.department-header {
+    margin: 10px auto 0 auto;
+    width: 95%;
+    display: grid;
+    grid-template-columns: 80% 20%;
+}
+
+.new-department-button {
+    padding: 0 !important;
+    margin-left: 5px !important;
+    margin-right: 5px !important;
+}
+
+.new-department-input{
+    width: 100%;
+    margin-bottom: 20px;
+}
+
 .department-list {
     display: grid;
     margin: 0 auto 0 auto;
