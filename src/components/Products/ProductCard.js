@@ -39,11 +39,19 @@ export default class extends React.Component {
     }
 
     updateProduct = async () => {
-        await this.suppliesDataService.updateProduct('products', this.props.product.id, {
-            "name": this.state.newProductName,
-            "description": this.state.newProductDescription,
-            "imgPath": null 
-        }, this.state.newProductFile);
+        if (this.state.newProductFile === null) {
+            await this.suppliesDataService.update('products', this.props.product.id, {
+                "name": this.state.newProductName,
+                "description": this.state.newProductDescription,
+                "imgPath": this.props.product.imgPath
+            })
+        } else {
+            await this.suppliesDataService.updateProduct('products', this.props.product.id, {
+                "name": this.state.newProductName,
+                "description": this.state.newProductDescription,
+                "imgPath": null
+            }, this.state.newProductFile);
+        }
         this.setState({ updateProductModalActive: false });
         this.props.reload();
     }
@@ -55,7 +63,7 @@ export default class extends React.Component {
 
     render() {
         return (
-            <div onMouseEnter={this.expandContent} onMouseLeave={this.minifyContent} className="product-card-container">
+            <div className="product-card-container">
                 <Modal className="update-product-modal" open={this.state.updateProductModalActive}>
                     <Modal.Header>Edit Product</Modal.Header>
                     <Modal.Content>

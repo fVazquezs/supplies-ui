@@ -78,8 +78,8 @@ export default class extends React.Component {
                 <Modal.Content>
                     <Modal.Description className="product-inputs">
                         <Input className="new-name-input" placeholder='Name' onChange={(event, data) => this.setState({ newProductName: data.value })} />
-                        <Input className="new-description-input" placeholder='Email' onChange={(event, data) => this.setState({ newProductDescription: data.value })} />
-                        <Input type='file' onChange={this.uploadImage} />
+                        <Input className="new-description-input" placeholder='Description' onChange={(event, data) => this.setState({ newProductDescription: data.value })} />
+                        <Input className="new-file-chooser" type='file' onChange={this.uploadImage} />
                     </Modal.Description>
                     <Button onClick={this.createNewProduct}>Create</Button>
                     <Button onClick={() => this.setState({ newProductModalActive: false })}>Cancel</Button>
@@ -91,7 +91,6 @@ export default class extends React.Component {
         return (
             <div className="master">
                 {this.newProductModal()}
-
                 <div className="product-header">
                     <Input className="product-filter" placeholder="Search product" onChange={(e, data) => this.filterProducts(data.value)} />
                     <Button className="new-product-button" onClick={() => this.setState({ newProductModalActive: true })}>New</Button>

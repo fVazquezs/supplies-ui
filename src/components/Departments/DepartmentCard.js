@@ -48,16 +48,15 @@ export default class extends React.Component {
                     <Modal.Header>Delete Department</Modal.Header>
                     <Modal.Content>
                         <Modal.Description className="department-inputs">
-                            Are you sure to delete {this.props.department.name}?
+                            Are you sure to delete <b>{this.props.department.name}</b>?
                         </Modal.Description>
                         <Button onClick={this.deleteDepartment}>Delete</Button>
                         <Button onClick={() => this.setState({ deleteDepartmentModalActive: false })}>Cancel</Button>
                     </Modal.Content>
                 </Modal>
-                <div className="department-name">{this.props.department.name}</div>
-                <div className='department-department'>{this.props.department.departmentId}</div>
-                <Button onClick={() => this.setState({ updateDepartmentModalActive: true })}><FontAwesomeIcon icon={faPen} /></Button>
-                <Button onClick={() => this.setState({ deleteDepartmentModalActive: true })}><FontAwesomeIcon icon={faTrash} /></Button>
+                <div className="department-name"><b>{this.props.department.name}</b></div>
+                <Button className="department-edit-button" onClick={() => this.setState({ updateDepartmentModalActive: true })}><FontAwesomeIcon icon={faPen} /></Button>
+                <Button className="department-delete-button" onClick={() => this.setState({ deleteDepartmentModalActive: true })}><FontAwesomeIcon icon={faTrash} /></Button>
             </div>
         );
     }
