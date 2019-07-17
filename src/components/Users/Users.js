@@ -61,7 +61,7 @@ export default class extends React.Component {
                     <Modal.Description className="user-inputs">
                         <Input className="new-name-input" placeholder='Name' onChange={(event, data) => this.setState({ newUserName: data.value })} />
                         <Input className="new-email-input" placeholder='Email' onChange={(event, data) => this.setState({ newUserEmail: data.value })} />
-                        <Input className="new-password-input" placeholder='Password' onChange={(event, data) => this.setState({ newUserPassword: data.value })} />
+                        <Input className="new-password-input" type="password" placeholder='Password' onChange={(event, data) => this.setState({ newUserPassword: data.value })} />
                         <Dropdown className="new-department-dropdown" placeholder="Select department" search selection
                             onChange={(event, data) => this.setState({ newUserDepartment: data.value })}
                             options={this.state.departments.map(department => {
